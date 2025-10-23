@@ -3,12 +3,12 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ command, mode }) => {
   const isProduction = mode === 'production';
+  const isBuild = command === 'build';
 
   return {
     base: '/',
-    mode,
     server: {
       host: "::",
       port: 5173,
@@ -28,24 +28,23 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'dist',
       assetsDir: 'assets',
-      minify: isProduction ? 'esbuild' : false,
-      sourcemap: !isProduction,
-      target: 'esnext',
+      minify: 'esbuild',
+      sourcemap: false,
+      target: 'es2015',
+      emptyOutDir: true,
       rollupOptions: {
         output: {
-          manualChunks: undefined, // Let Vite handle chunking automatically
+          manualChunks: {
+            vendor: ['react', 'react-dom'],
+            router: ['react-router-dom'],
+          },
         },
       },
     },
     define: {
       'process.env.NODE_ENV': JSON.stringify(mode),
-      __DEV__: !isProduction,
-    },
-    esbuild: {
-      // Drop console and debugger in production
-      drop: isProduction ? ['console', 'debugger'] : [],
-      // Ensure proper JSX handling
-      jsx: 'automatic',
+      'import.meta.env.DEV': !isProduction,
+      'import.meta.env.PROD': isProduction,
     },
   };
 });
