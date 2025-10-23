@@ -4,7 +4,7 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/',
   plugins: [
     react(),
   ],
@@ -18,12 +18,6 @@ export default defineConfig({
     assetsDir: 'assets',
     minify: false,
     sourcemap: false,
-    target: 'es2015',
     emptyOutDir: true,
-    rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'index.html')
-      }
-    }
   },
 });
