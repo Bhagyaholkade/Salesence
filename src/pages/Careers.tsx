@@ -302,7 +302,7 @@ const companyValues = [
 
 // Team activities are now defined inline with translation keys
 
-type JobOpening = typeof jobOpenings[0];
+type JobOpening = ReturnType<typeof getJobOpenings>[0];
 
 // Video Modal Component
 const VideoModal = ({ isOpen, onClose, videoUrl }: { isOpen: boolean, onClose: () => void, videoUrl: string }) => {
