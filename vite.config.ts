@@ -26,6 +26,7 @@ export default defineConfig(({ mode }) => ({
     assetsDir: 'assets',
     minify: 'esbuild',
     sourcemap: false,
+    target: 'es2015',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -36,5 +37,9 @@ export default defineConfig(({ mode }) => ({
   },
   define: {
     'process.env.NODE_ENV': JSON.stringify(mode),
+    'process.env': {},
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
   },
 }));
