@@ -9,7 +9,7 @@
     "dev:backend": "cd product-scraper && npm run dev",
     "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" --names \"backend,frontend\" --prefix-colors \"blue,green\"",
     "start": "npm run dev:all",
-    "build": "NODE_ENV=production vite build",
+    "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview"
