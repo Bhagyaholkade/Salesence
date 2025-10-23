@@ -7,6 +7,10 @@ export default defineConfig(() => ({
   server: {
     host: "::",
     port: 5173,
+    allowedHosts: [
+      "salesence-h463.onrender.com",
+      ".onrender.com", // Allow all Render subdomains
+    ],
   },
   plugins: [
     react(),
