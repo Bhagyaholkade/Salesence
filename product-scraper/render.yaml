@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: salesence-backend-api
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: pnpm install && pnpm run build
+    startCommand: cd apps/api && node dist/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        sync: false
+      - key: SCRAPING_MODE
+        value: html
+      - key: HEADLESS
+        value: true
+      - key: MAX_RECOMMENDATIONS
+        value: 8
+      - key: SEARCH_PAGES_TO_FETCH
+        value: 1
+      - key: PRICE_BAND_PERCENTAGE
+        value: 25
+      - key: LOG_LEVEL
+        value: info
+      - key: RATE_LIMIT_PER_DOMAIN_PER_SEC
+        value: 0.5
+      - key: MAX_RETRIES
+        value: 3
+      - key: USER_AGENTS_JSON
+        value: '["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"]'
