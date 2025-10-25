@@ -12,33 +12,22 @@ cd packages/db
 npx prisma generate
 cd ../..
 
-echo "==> Building database package with declarations..."
+echo "==> Building database package..."
 cd packages/db
 npx tsc --declaration --declarationMap --emitDeclarationOnly false
 cd ../..
 
-echo "==> Verifying db build..."
-ls -la packages/db/dist/
-
-echo "==> Building scraper-core package with declarations..."
+echo "==> Building scraper-core package..."
 cd packages/scraper-core
 npx tsc --declaration --declarationMap --emitDeclarationOnly false
 cd ../..
 
-echo "==> Verifying scraper-core build..."
-ls -la packages/scraper-core/dist/
+echo "==> Installing Playwright browsers with system dependencies..."
+npx playwright install --with-deps chromium
 
-echo "==> Building API with declarations..."
+echo "==> Building API..."
 cd apps/api
 npx tsc --declaration --declarationMap --emitDeclarationOnly false
 cd ../..
-
-echo "==> Verifying all builds..."
-echo "DB dist:"
-ls -la packages/db/dist/
-echo "Scraper-core dist:"
-ls -la packages/scraper-core/dist/
-echo "API dist:"
-ls -la apps/api/dist/
 
 echo "==> Build complete!"
