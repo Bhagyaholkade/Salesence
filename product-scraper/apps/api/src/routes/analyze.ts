@@ -12,8 +12,13 @@ router.post('/', async (req,res,next)=>{
   const started = Date.now();
   try{
     const parsed = schema.parse(req.body);
+    log.info({url: parsed.url}, 'Starting scrape');
+    
     const r1 = await scrapeProduct(parsed.url, 'req-'+started);
+    log.info({product: r1.product.name}, 'Scrape complete');
+    
     const recs = await searchAndRecommend(r1.product, r1.marketplace, 'req-'+started, parsed.url);
+    log.info({recsCount: recs.length}, 'Recommendations complete');
 
     const response: AnalyzeResponse = {
       productDetails: {
@@ -34,7 +39,10 @@ router.post('/', async (req,res,next)=>{
     };
     log.info({tookMs: response.meta.tookMs, recs: response.recommendations.length}, 'done');
     res.json(response);
-  }catch(e){ next(e); }
+  }catch(e){ 
+    log.error({error: e, message: e instanceof Error ? e.message : 'Unknown error', stack: e instanceof Error ? e.stack : undefined}, 'Analyze failed');
+    next(e); 
+  }
 });
 
 export default router;
