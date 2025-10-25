@@ -12,27 +12,31 @@ cd packages/db
 npx prisma generate
 cd ../..
 
-echo "==> Building database package..."
+echo "==> Building database package with declarations..."
 cd packages/db
-npx tsc --build
+npx tsc --declaration --declarationMap --emitDeclarationOnly false
 cd ../..
 
-echo "==> Verifying db build..."
+echo "==> Verifying db build and declarations..."
 ls -la packages/db/dist/
+cat packages/db/dist/index.d.ts || echo "ERROR: index.d.ts not found!"
 
 echo "==> Building scraper-core package..."
 cd packages/scraper-core
-npx tsc --build
+npx tsc
 cd ../..
 
 echo "==> Building API..."
 cd apps/api
-npx tsc --build
+npx tsc
 cd ../..
 
 echo "==> Verifying all builds..."
+echo "DB dist:"
 ls -la packages/db/dist/
+echo "Scraper-core dist:"
 ls -la packages/scraper-core/dist/
+echo "API dist:"
 ls -la apps/api/dist/
 
 echo "==> Build complete!"
