@@ -8,18 +8,18 @@ echo "==> Installing dependencies..."
 pnpm install --no-frozen-lockfile
 
 echo "==> Generating Prisma client..."
-cd packages/db && npx prisma generate && cd ../..
+cd packages/db
+npx prisma generate
+cd ../..
 
-echo "==> Building database package..."
-cd packages/db && pnpm run build && cd ../..
+echo "==> Building all packages in correct order..."
+pnpm -r --filter "@scraper/db" run build
+pnpm -r --filter "@scraper/scraper-core" run build
+pnpm -r --filter "@scraper/api" run build
 
-echo "==> Building scraper-core package..."
-cd packages/scraper-core && pnpm run build && cd ../..
-
-echo "==> Installing Playwright..."
-npx playwright install chromium --with-deps
-
-echo "==> Building API..."
-cd apps/api && pnpm run build && cd ../..
+echo "==> Verifying builds..."
+ls -la packages/db/dist/ || echo "DB dist not found"
+ls -la packages/scraper-core/dist/ || echo "Scraper-core dist not found"
+ls -la apps/api/dist/ || echo "API dist not found"
 
 echo "==> Build complete!"
