@@ -12,7 +12,7 @@ const app = express();
 app.use(helmet());
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://salesence-frontend.netlify.app'] // Your Netlify frontend
+    ? ['https://salesence-frontend.netlify.app', 'https://*.netlify.app'] // Allow all Netlify subdomains
     : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true
 }));
