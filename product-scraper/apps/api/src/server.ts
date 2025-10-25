@@ -11,9 +11,24 @@ import { config } from '@scraper/scraper-core';
 const app = express();
 app.use(helmet());
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
-    ? ['https://salesence-frontend.netlify.app', 'https://*.netlify.app'] // Allow all Netlify subdomains
-    : ['http://localhost:5173', 'http://localhost:3000'],
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'https://salesence-frontend.netlify.app',
+      'http://localhost:5173',
+      'http://localhost:3000'
+    ];
+    
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    // Allow any Netlify subdomain
+    if (origin.endsWith('.netlify.app')) return callback(null, true);
+    
+    // Allow specific origins
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true
 }));
 app.use(express.json());
