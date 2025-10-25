@@ -17,18 +17,20 @@ cd packages/db
 npx tsc --declaration --declarationMap --emitDeclarationOnly false
 cd ../..
 
-echo "==> Verifying db build and declarations..."
+echo "==> Verifying db build..."
 ls -la packages/db/dist/
-cat packages/db/dist/index.d.ts || echo "ERROR: index.d.ts not found!"
 
-echo "==> Building scraper-core package..."
+echo "==> Building scraper-core package with declarations..."
 cd packages/scraper-core
-npx tsc
+npx tsc --declaration --declarationMap --emitDeclarationOnly false
 cd ../..
 
-echo "==> Building API..."
+echo "==> Verifying scraper-core build..."
+ls -la packages/scraper-core/dist/
+
+echo "==> Building API with declarations..."
 cd apps/api
-npx tsc
+npx tsc --declaration --declarationMap --emitDeclarationOnly false
 cd ../..
 
 echo "==> Verifying all builds..."
